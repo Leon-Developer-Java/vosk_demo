@@ -104,7 +104,7 @@ class RealTimeSpeechRecognizer:
                     # 完整的识别结果
                     result = json.loads(self.recognizer.Result())
                     if result['text']:
-                        print(f"识别结果: {result['text']}")
+                        print(f"     ----    识别结果: {result['text']}")
                 else:
                     # 部分识别结果（实时显示）
                     partial_result = json.loads(self.recognizer.PartialResult())
