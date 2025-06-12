@@ -11,6 +11,52 @@ import json
 import pyaudio
 from vosk import Model, KaldiRecognizer
 
+def list_available_models():
+    """
+    列出可用的模型
+    """
+    models_dir = "models"
+    if not os.path.exists(models_dir):
+        return []
+    
+    models = []
+    for item in os.listdir(models_dir):
+        model_path = os.path.join(models_dir, item)
+        if os.path.isdir(model_path):
+            models.append(item)
+    return models
+
+def select_model():
+    """
+    选择要使用的模型
+    """
+    # 列出models目录中的模型
+    available_models = list_available_models()
+    if not available_models:
+        print("错误：未找到任何模型")
+        print("请先运行 download_model.py 下载模型")
+        return None
+    
+    print("\n可用的模型：")
+    for i, model in enumerate(available_models, 1):
+        print(f"{i}. {model}")
+    
+    while True:
+        try:
+            choice = input(f"\n请选择模型 (1-{len(available_models)}): ")
+            index = int(choice) - 1
+            if 0 <= index < len(available_models):
+                selected_model = os.path.join("models", available_models[index])
+                print(f"已选择模型: {selected_model}")
+                return selected_model
+            else:
+                print("无效选择，请重新输入")
+        except ValueError:
+            print("请输入有效的数字")
+        except KeyboardInterrupt:
+            print("\n取消选择")
+            return None
+
 class RealTimeSpeechRecognizer:
     def __init__(self, model_path="model", sample_rate=16000):
         """
@@ -134,11 +180,16 @@ def main():
     主函数
     """
     print("=== Vosk 实时语音识别程序 ===")
-    print("使用最小参数模型进行实时语音识别")
+    print("使用Vosk模型进行实时语音识别")
     print()
     
+    # 选择模型
+    model_path = select_model()
+    if not model_path:
+        return
+    
     # 创建识别器实例
-    recognizer = RealTimeSpeechRecognizer()
+    recognizer = RealTimeSpeechRecognizer(model_path=model_path)
     
     # 开始识别
     recognizer.start_recognition()
