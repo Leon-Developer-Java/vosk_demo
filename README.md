@@ -14,7 +14,10 @@
 
 | 语言 | 模型名称 | 大小 | 描述 |
 |------|----------|------|------|
-| 中文 | vosk-model-small-cn-0.22 | 42MB | 轻量级中文模型 |
+| 中文 | vosk-model-small-cn-0.22 | 42MB | 轻量级中文模型（推荐） |
+| 中文 | vosk-model-cn-0.22 | 1.3GB | 中文标准模型（高精度） |
+| 中文 | vosk-model-cn-kaldi-multicn-0.15 | 1.5GB | 中文Kaldi多方言模型 |
+| 中文 | vosk-model-cn-0.15 | 1.67GB | 中文旧版大模型 |
 | 英文 | vosk-model-small-en-us-0.15 | 40MB | 轻量级美式英语模型 |
 
 ## 安装依赖
@@ -36,8 +39,13 @@ python download_model.py
 ```
 
 按照提示选择要下载的模型：
-- 输入 `1` 下载中文模型
-- 输入 `2` 下载英文模型
+- 输入 `1` 下载中文小型模型（推荐，42MB）
+- 输入 `2` 下载中文标准模型（高精度，1.3GB）
+- 输入 `3` 下载中文Kaldi多方言模型（1.5GB）
+- 输入 `4` 下载中文旧版大模型（1.67GB）
+- 输入 `5` 下载英文小型模型（40MB）
+
+模型将自动下载并解压到 `models/` 目录下的相应子文件夹中。
 
 ### 步骤 2: 运行语音识别
 
@@ -53,6 +61,7 @@ python real_time_speech_recognition.py
 - 音频设备检测
 - 完整的日志输出
 - 资源清理
+- **交互式模型选择**
 
 #### 简化版
 ```bash
@@ -63,13 +72,17 @@ python simple_speech_recognition.py
 - 代码简洁
 - 快速启动
 - 适合学习和测试
+- **交互式模型选择**
+
+**注意**: 运行时程序会自动列出 `models/` 目录下的所有可用模型，您可以通过数字选择要使用的模型。
 
 ## 文件说明
 
 - `requirements.txt` - Python 依赖包列表
-- `download_model.py` - 模型下载脚本
-- `real_time_speech_recognition.py` - 完整版实时语音识别程序
-- `simple_speech_recognition.py` - 简化版语音识别程序
+- `download_model.py` - 模型下载脚本，支持多种模型选择
+- `real_time_speech_recognition.py` - 完整版实时语音识别程序，支持模型选择
+- `simple_speech_recognition.py` - 简化版语音识别程序，支持模型选择
+- `models/` - 模型存储目录，包含各种下载的语音识别模型
 - `README.md` - 项目说明文档
 
 ## 使用示例
@@ -79,16 +92,26 @@ python simple_speech_recognition.py
 # 安装依赖
 pip install -r requirements.txt
 
-# 下载模型
+# 下载模型（选择适合的模型）
 python download_model.py
 
 # 运行语音识别
 python real_time_speech_recognition.py
 ```
 
-2. 程序运行后，对着麦克风说话，程序会实时显示识别结果。
+2. 程序运行后：
+   - 首先会显示可用模型列表
+   - 输入数字选择要使用的模型
+   - 对着麦克风说话，程序会实时显示识别结果
 
 3. 按 `Ctrl+C` 停止程序。
+
+## 模型选择建议
+
+- **快速测试**: 选择小型模型（42MB），启动快，占用内存少
+- **高精度识别**: 选择标准模型（1.3GB），识别准确率更高
+- **方言支持**: 选择Kaldi多方言模型，支持多种中文方言
+- **资源受限环境**: 推荐使用小型模型
 
 ## 系统要求
 
@@ -113,8 +136,9 @@ python real_time_speech_recognition.py
 
 3. **模型加载失败**
    - 确保已运行 `download_model.py` 下载模型
-   - 检查 `model` 文件夹是否存在且包含模型文件
+   - 检查 `models/` 文件夹是否存在且包含模型文件
    - 重新下载模型
+   - 确认选择的模型编号正确
 
 4. **识别准确率低**
    - 确保环境安静
