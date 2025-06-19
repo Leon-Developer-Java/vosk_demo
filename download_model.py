@@ -136,7 +136,7 @@ def setup_model(model_type="cn_small"):
         print(f"模型类型: {model_info['description']}")
         print(f"模型路径: {model_path}")
         print("\n提示：在语音识别程序中使用时，请指定正确的模型路径。")
-        print("现在可以运行 real_time_speech_recognition.py或simple_speech_recognition.py 进行语音识别了！")
+        print("real_time_speech_recognition.py或simple_speech_recognition.py 进行语音识别了！")
         return True
         
     except Exception as e:
